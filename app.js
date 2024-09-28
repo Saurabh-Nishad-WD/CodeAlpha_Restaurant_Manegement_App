@@ -3,6 +3,7 @@ const app = express()
 const dotenv = require('dotenv');
 const auth = require('./routes/authRoute')
 const user = require('./routes/userRoute')
+const restaurant = require("./routes/restaurantRoute");
 const connectDB = require('./config/connectDB');
 
 
@@ -15,6 +16,7 @@ connectDB();
 
 app.use('/',auth);
 app.use('/user',user);
+app.use('/restaurant',restaurant);
 
 
 

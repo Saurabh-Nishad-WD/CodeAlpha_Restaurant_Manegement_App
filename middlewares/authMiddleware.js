@@ -38,28 +38,3 @@ const authMiddleware =  (req,res,next) =>{
 }
 
 module.exports = authMiddleware;
-
-// const jwt = require('jsonwebtoken');
-// const loginMiddelware = (req,res,next) =>{
-//     try{
-//         const token = req.headers["authorization"].split(" ")[1];
-//         jwt.verify(token,process.env.jwt_secret,(err,decode) => {
-    
-//             if(err){
-//                 return res.status(401).send("not working ///");
-//             }
-
-//             else{
-//                 req.body.id = decode.id;
-//                 next();
-//             }            
-
-//         });
-//     }
-//     catch(err){
-//         console.log(err);
-//         res.status(505).send(err);
-//     }
-// };
-
-// module.exports = loginMiddelware;
