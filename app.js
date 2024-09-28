@@ -6,6 +6,7 @@ const user = require('./routes/userRoute')
 const restaurant = require("./routes/restaurantRoute");
 const category = require("./routes/categoryRoute");
 const food = require("./routes/foodRoute");
+const order = require('./routes/orderRoute')
 const connectDB = require('./config/connectDB');
 
 
@@ -21,6 +22,7 @@ app.use('/user',user);
 app.use('/restaurant',restaurant);
 app.use('/category',category);
 app.use('/food',food);
+app.use('/order',order);
 
 
 

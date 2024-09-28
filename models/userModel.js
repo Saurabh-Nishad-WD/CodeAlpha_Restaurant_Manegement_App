@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema({
         default: 'staff'
     },
     isOwner:{
-        type:String,
+        type:Boolean,
         default:false
     }
 },{timestamps:true});
