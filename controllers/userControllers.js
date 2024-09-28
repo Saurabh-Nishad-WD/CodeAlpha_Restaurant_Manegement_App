@@ -49,6 +49,14 @@ const updateUser = async (req,res) => {
 
            const user = await userModel.findOne({_id:req.body.id});
 
+             const isMatch =  await bcryptjs.compare(password,user.password);
+             
+          if(!isMatch){
+            return res.status(500).send({
+                message:"Un-Authorised access"
+            });
+           }
+
         if(email){
             user.email = email;
            }

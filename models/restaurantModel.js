@@ -5,7 +5,7 @@ const restaurantSchema = new mongoose.Schema({
         unique:true,
         required:true
     },
-    imageURL:{
+    logoUrl:{
         type:String,
         unique:true,
         default:""

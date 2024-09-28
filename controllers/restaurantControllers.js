@@ -1,23 +1,49 @@
 const restaurantModel = require("../models/restaurantModel");
+const userModel = require("../models/userModel");
+const bcryptjs = require("bcryptjs");
 
 const create = async (req,res) => {
     try{
-        const {title,imageURL,foods,time,pickup,delivery,isOpen,rating} = req.body;
-        if(!title || !foods || !time){
+         const user = await userModel.findOne({_id:req.body.id});
+        if(!user){
+            return res.status(500).send({
+                message:"Un-Authorised access"
+            });
+           }
+
+           if(!(user.isOwner)){
+           return res.status(500).send({
+               message:"only owner can create the restaurant"
+           });
+         }
+console.log("1");
+        const {password,title,logoUrl,foods,time,pickup,delivery,isOpen,rating} = req.body;
+
+        if(!password || !title || !foods || !time){
             return res.status(500).send({
                 message:"please provide important information"
             });
         }
+          const isMatch =  await bcryptjs.compare(password,user.password);
+          if(!isMatch){
+            return res.status(500).send({
+                message:"Un-Authorised access"
+            });
+           }
+           console.log("2");
+
+
         const exist = await restaurantModel.findOne({title});
         if(exist){
             return res.status(500).send({
                 message:"title is not available"
             });
         }
+        console.log("3");
 
         const newRestaurant =  new restaurantModel({
             title,
-            imageURL,
+            logoUrl,
             foods,
             time,
             pickup,
@@ -78,8 +104,86 @@ const getResataurant = async (req,res) => {
         });
     }
 }
+
+const updateRestaurant = async (req,res) => {
+    try{
+
+         const user = await userModel.findOne({_id:req.body.id});
+        if(!user){
+            return res.status(500).send({
+                message:"Un-Authorised access"
+            });
+           }
+
+        const {password,title,logoUrl,foods,time,pickup,delivery,isOpen,rating} = req.body;
+        if(!password || !title || !foods || time ){
+            return res.status(500).send({
+                message:"please provide important information"
+            });
+        }
+
+        const isMatch =  await bcryptjs.compare(password,user.password);
+        if(!isMatch){
+          return res.status(500).send({
+              message:"Un-Authorised access"
+          });
+         }
+
+          const restaurant = await restaurantModel.findById(req.params.id);
+          if(!restaurant){
+            return res.status(500).send({
+                message:"restaurant not found"
+            });
+          }
+
+          if(title) restaurant.title = title;
+          if(logoUrl) restaurant.logoUrl = logoUrl;
+          if(foods) restaurant.foods = foods;
+          if(time) restaurant.time = time;
+          if(pickup) restaurant.pickup = pickup;
+          if(delivery) restaurant.delivery = delivery;
+          if(isOpen) restaurant.isOpen = isOpen;
+          if(rating) restaurant.rating = rating;
+
+            await restaurant.save();
+            
+            res.status(200).send({
+                message:"restaurant updated",
+                restaurant
+            })
+            
+        }
+        catch(err){
+            res.status(500).send({
+                message:"restaurant update error",
+                err
+            });
+        }
+    }
+
 const deleteRestaurant = async (req,res) => {
     try{
+
+        const user = await userModel.findOne({_id:req.body.id});
+        if(!user){
+            return res.status(500).send({
+                message:"Un-Authorised access"
+            });
+           }
+
+           if(!(user.isOwner)){
+           return res.status(500).send({
+               message:"only owner can delete the restaurant"
+           });
+         }
+         const{password} = req.body;
+         
+         const isMatch =  await bcryptjs.compare(password,user.password);
+         if(!isMatch){
+           return res.status(500).send({
+               message:"Un-Authorised access"
+           });
+          }
        
         const isAvailable = await restaurantModel.findById(req.params.id);
         if(!isAvailable){
@@ -103,4 +207,4 @@ const deleteRestaurant = async (req,res) => {
     }
 }
 
-module.exports = {create,getAllResataurant,getResataurant,deleteRestaurant};
+module.exports = {create,getAllResataurant,getResataurant,updateRestaurant,deleteRestaurant};

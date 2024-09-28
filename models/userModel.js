@@ -23,6 +23,10 @@ const userSchema = mongoose.Schema({
         type:String,
         enum:['owner','cheff','staff','other'],
         default: 'staff'
+    },
+    isOwner:{
+        type:String,
+        default:false
     }
 },{timestamps:true});
 
