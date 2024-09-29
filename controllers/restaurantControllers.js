@@ -177,6 +177,12 @@ const deleteRestaurant = async (req,res) => {
            });
          }
          const{password} = req.body;
+
+         if(!password){
+            return res.status(500).send({
+                message:"password is necesory to delete the restaurant, Please provide"
+            });
+         }
          
          const isMatch =  await bcryptjs.compare(password,user.password);
          if(!isMatch){

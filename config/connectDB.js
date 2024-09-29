@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const { default: mongoose } = require("mongoose");
 
 const connectDB = async (req,res) =>{
     try{
@@ -6,7 +6,7 @@ const connectDB = async (req,res) =>{
         console.log(`connected to mongoDB server at ${mongoose.connection.host}`);
     }
     catch(err){
-        res.status(500).send({
+         res.status(500).send({
             message:"error",
             err
         });

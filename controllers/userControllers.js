@@ -47,20 +47,31 @@ const updateUser = async (req,res) => {
     try{
         const {password,email,newPassword,mobile} = req.body;
 
-           const user = await userModel.findOne({_id:req.body.id});
-
-             const isMatch =  await bcryptjs.compare(password,user.password);
-             
-          if(!isMatch){
+        if(!password){
             return res.status(500).send({
-                message:"Un-Authorised access"
+                message:"please provide password"
             });
            }
+           const user = await userModel.findOne({_id:req.body.id});
+
+           const isMatch =  await bcryptjs.compare(password,user.password);
+           
+        if(!isMatch){
+          return res.status(500).send({
+              message:"Un-Authorised access"
+          });
+         }
+
+           if(!email && !newPassword && !mobile){
+            return res.status(200).send({
+                message:"nothing changed"
+            });
+           }           
 
         if(email){
             user.email = email;
            }
-        if(password){
+        if(newPassword){
 
             const salt = bcryptjs.genSaltSync(10)
             const hashPassword = await bcryptjs.hash(newPassword,salt);

@@ -19,15 +19,16 @@ try{
             message:"please select minimum one item for order"
         });
        }
+
        if(!buyer){
         return res.status(500).send({
             message:"please provide your refrence"
         });
        }
-
+       const totalItems = cart.length;
        let total = 0;
        cart.map((item) => {
-        total = total + parseInt(item.price);
+        total = total + parseFloat(item.price);
        });
 
        const newOrder = new orderModel({
@@ -41,6 +42,7 @@ try{
 
        res.status(200).send({
         message:"order succesfully placed",
+        totalItems:totalItems,
         total_amount:total,
         newOrder
        });

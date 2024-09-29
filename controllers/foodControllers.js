@@ -130,7 +130,7 @@ const deleteFood = async (req,res) => {
             });
         }
 
-        await categoryModel.findByIdAndDelete(req.params.id);
+        await foodModel.findByIdAndDelete(req.params.id);
 
         res.status(200).send({
             message:`food deleted`,
