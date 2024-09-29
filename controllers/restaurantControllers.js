@@ -16,7 +16,6 @@ const create = async (req,res) => {
                message:"only owner can create the restaurant"
            });
          }
-console.log("1");
         const {password,title,logoUrl,foods,time,pickup,delivery,isOpen,rating} = req.body;
 
         if(!password || !title || !foods || !time){
@@ -30,7 +29,6 @@ console.log("1");
                 message:"Un-Authorised access"
             });
            }
-           console.log("2");
 
 
         const exist = await restaurantModel.findOne({title});
@@ -39,7 +37,6 @@ console.log("1");
                 message:"title is not available"
             });
         }
-        console.log("3");
 
         const newRestaurant =  new restaurantModel({
             title,
