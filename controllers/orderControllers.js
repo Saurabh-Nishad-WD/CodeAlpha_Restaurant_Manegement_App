@@ -3,8 +3,6 @@ const userModel = require("../models/userModel");
 
 const order = async(req,res) => {
 try{
-    console.log("0");
-
     
     const user = await userModel.findOne({_id:req.body.id});
     if(!user){
@@ -85,4 +83,28 @@ const orderstatus = async (req,res) => {
         });
     }
 }
-module.exports = {order,orderstatus};
+
+
+const deleteOrder = async (req,res) => {
+    try{
+
+        const order = await orderModel.findByIdAndDelete(req.params.id);
+        if(!order){
+            return res.status(500).send({
+                message:"order not found to delete"
+            });
+        }
+
+        res.status(200).send({
+            message:"status successfully deleted",
+        });
+
+    }
+    catch(err){
+        res.status(500).send({
+            message:"order status err",
+            err
+        });
+    }
+}
+module.exports = {order,orderstatus,deleteOrder};
