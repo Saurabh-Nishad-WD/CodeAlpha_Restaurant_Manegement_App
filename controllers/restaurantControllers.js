@@ -16,7 +16,7 @@ const create = async (req,res) => {
                message:"only owner can create the restaurant"
            });
          }
-        const {password,title,logoUrl,foods,time,pickup,delivery,isOpen,rating} = req.body;
+        const {password,title,logoUrl,foods,time,capacity,currentAt,pickup,delivery,isOpen,rating} = req.body;
 
         if(!password || !title || !foods || !time){
             return res.status(500).send({
@@ -43,6 +43,8 @@ const create = async (req,res) => {
             logoUrl,
             foods,
             time,
+            capacity,
+            currentAt,
             pickup,
             delivery,
             isOpen,
@@ -112,7 +114,7 @@ const updateRestaurant = async (req,res) => {
             });
            }
 
-        const {password,title,logoUrl,foods,time,pickup,delivery,isOpen,rating} = req.body;
+        const {password,title,logoUrl,foods,capacity,time,pickup,delivery,isOpen,rating} = req.body;
         if(!password || !title || !foods || time ){
             return res.status(500).send({
                 message:"please provide important information"

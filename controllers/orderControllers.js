@@ -1,3 +1,4 @@
+const foodModel = require("../models/foodModel");
 const orderModel = require("../models/orderModel");
 const userModel = require("../models/userModel");
 
@@ -12,7 +13,7 @@ try{
        }
        const{cart,payment,buyer,status} = req.body;
 
-       if(!cart){
+       if(!cart || cart.length == 0){
         return res.status(500).send({
             message:"please select minimum one item for order"
         });
@@ -25,9 +26,11 @@ try{
        }
        const totalItems = cart.length;
        let total = 0;
-       cart.map((item) => {
-        total = total + parseFloat(item.price);
-       });
+       for (const ids of cart) {
+           const item = await foodModel.findById(ids);
+           total += parseInt(item.price);
+       }
+       
 
        const newOrder = new orderModel({
         cart,
@@ -44,6 +47,8 @@ try{
         total_amount:total,
         newOrder
        });
+
+       total = 0;
 
 }
 catch(err){
@@ -96,13 +101,13 @@ const deleteOrder = async (req,res) => {
         }
 
         res.status(200).send({
-            message:"status successfully deleted",
+            message:"order successfully deleted",
         });
 
     }
     catch(err){
         res.status(500).send({
-            message:"order status err",
+            message:"order deletion err",
             err
         });
     }

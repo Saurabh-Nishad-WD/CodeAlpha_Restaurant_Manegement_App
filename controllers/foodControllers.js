@@ -90,12 +90,13 @@ const updateFood = async (req,res) => {
                 message:"food not found"
             });
           }
-          const {title,imageUrl,about,category,taste,isAvailable,restaurant} = req.body;
+          const {title,imageUrl,about,price,category,taste,isAvailable,restaurant} = req.body;
 
           console.log("1");
           if(title) food.title = title;
           if(imageUrl) food.imageUrl = imageUrl;
           if(about) food.about = about;
+          if(price) food.price = price;
           if(category) food.category = category;
           if(taste) food.taste = taste;
           if(isAvailable) food.isAvailable = isAvailable;

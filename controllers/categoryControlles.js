@@ -76,13 +76,26 @@ const getCategory = async (req,res) => {
 }
 const updateCategory = async (req,res) => {
     try{
-
+ 
+        const user = await userModel.findOne({_id:req.body.id});
+        if(!user){
+            return res.status(500).send({
+                message:"Un-Authorised access"
+            });
+           }
         const {password,title,imageUrl} = req.body;
         if(!password || !title){
             return res.status(500).send({
                 message:"please provide important information"
             });
         }
+
+        const isMatch =  await bcryptjs.compare(password,user.password);
+        if(!isMatch){
+          return res.status(500).send({
+              message:"Un-Authorised access"
+          });
+         }
 
           const category = await categoryModel.findById(req.params.id);
           if(!category){

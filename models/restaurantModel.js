@@ -14,6 +14,14 @@ const restaurantSchema = new mongoose.Schema({
         type:Array,
         required:true
     }],
+    capacity:{
+        type:Number,
+        required:true
+    },
+    currentAt:{
+        type:Number,
+        default:1 
+   },
     time:{
         type:String,
         required:true
