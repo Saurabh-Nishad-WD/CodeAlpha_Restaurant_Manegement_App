@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const register = async (req,res) =>{
     try{
         const{username,email,password,mobile,role,isOwner} = req.body;
-        if(!username && !email && !password && !mobile){
+        if(!username || !email || !password || !mobile){
             return res.status(404).send({
                 message:"please provide all important field"
             });
