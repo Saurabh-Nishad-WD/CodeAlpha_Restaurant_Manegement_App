@@ -10,3 +10,5 @@ route.put('/updateCategory/:id',authMiddleware,updateCategory);
 route.delete('/delete/:id',authMiddleware,deleteCategory);
 
 module.exports = route;
+
+
